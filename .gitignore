@@ -1,0 +1,5 @@
+test/
+quarantine/
+empty_q/
+directory-info.*
+*.save
