@@ -55,7 +55,7 @@ ls -l "$dir" > directory-info.new
 
 if [ ! -f directory-info.last ]; then
     scan
-    cp directory-info.new directory-info.last
+    ls -l "$dir" > directory-info.last
 fi
 
 # ---- 6. Main loop ----
@@ -65,6 +65,6 @@ while true; do
 
     if ! diff -q directory-info.last directory-info.new > /dev/null; then
         scan
-        cp directory-info.new directory-info.last
+        ls -l "$dir" > directory-info.last
     fi
 done

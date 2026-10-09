@@ -22,7 +22,7 @@ Runtime files (not committed): `directory-info.last`, `directory-info.new`, `whi
   - Takes a snapshot of `dir` with `ls -l` into `directory-info.new` every `interval-secs`.
   - Compares it with `directory-info.last` using `diff`.
   - On the first run (no `.last` file) it scans immediately and creates `.last`.
-  - If the snapshots differ, it scans `dir` and then copies `.new` over `.last`. If not, it just waits.
+  - If the snapshots differ, it scans `dir` and then regenerates `.last` from the current contents of `dir`. If not, it just waits.
   - Each malicious file is reported (`<file> is malicious and it is DELETED`), copied to `malicious_dir`, and deleted from `dir`.
 - `restore.sh dir malicious_dir`
   - Lists the quarantined files (numbered) and asks the user to pick one.
@@ -83,7 +83,7 @@ Both lists are hardcoded in `antivirusd.sh` (and repeated in `antivirus-cron.sh`
 
 ## Bonus 1: Cron Job
 
-`antivirus-cron.sh dir malicious_dir` is a single-run version of the daemon (no loop, no sleep). It takes a snapshot, compares it with `directory-info.last`, scans if the listing changed (or on the first run), and quarantines malicious files. It stores its snapshot files next to the script, and prints a timestamp with every detection so the cron log is readable.
+`antivirus-cron.sh dir malicious_dir` is a single-run version of the daemon (no loop, no sleep). It takes a snapshot, compares it with `directory-info.last`, scans if the listing changed (or on the first run), and quarantines malicious files. It stores its snapshot files next to the script.
 
 ### Prerequisites
 

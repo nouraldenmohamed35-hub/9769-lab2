@@ -22,16 +22,16 @@ while true; do
 
     # Stop when everything has been reviewed
     if [ ${#files[@]} -eq 0 ]; then
-        echo "No malicious files to review."
         exit 0
     fi
 
-    echo "Files in quarantine:"
+    echo "Choose a file:"
     for i in "${!files[@]}"; do
-        echo "$((i+1))) ${files[$i]}"
+        echo "$((i+1)): ${files[$i]}"
     done
 
-    read -p "Pick a file number: " num
+    # Stop cleanly if the input ends
+    read -r num || exit 0
 
     # Validate the number
     if ! [[ "$num" =~ ^[0-9]+$ ]] || [ "$num" -lt 1 ] || [ "$num" -gt "${#files[@]}" ]; then
@@ -41,11 +41,11 @@ while true; do
 
     file="${files[$((num-1))]}"
 
-    echo "Selected: $file"
-    echo "1) Restore (false positive)"
-    echo "2) Delete permanently (malicious)"
-    echo "3) Leave as is"
-    read -p "Choose an option: " opt
+    echo "For $file:"
+    echo "1: Restore this file back into dir (it was a false positive)"
+    echo "2: Permanently delete this file from malicious_dir (it was genuinely malicious)"
+    echo "3: Go back"
+    read -r opt || exit 0
 
     case "$opt" in
         1)

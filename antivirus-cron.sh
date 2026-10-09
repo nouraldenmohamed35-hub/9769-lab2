@@ -43,7 +43,7 @@ scan() {
         file=$(basename "$path")
 
         if is_malicious "$file"; then
-            echo "$(date '+%F %T') $file is malicious and it is DELETED"
+            echo "$file is malicious and it is DELETED"
             cp "$path" "$malicious_dir/$file"
             rm "$path"
         fi
@@ -55,5 +55,5 @@ ls -l "$dir" > "$new"
 # Scan on the first run (no .last file) or when the listing changed
 if [ ! -f "$last" ] || ! diff -q "$last" "$new" > /dev/null; then
     scan
-    cp "$new" "$last"
+    ls -l "$dir" > "$last"
 fi
