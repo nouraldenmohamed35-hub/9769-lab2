@@ -8,6 +8,7 @@ fi
 
 dir="$1"
 malicious_dir="$2"
+whitelist="$(cd "$(dirname "$0")" && pwd)/whitelist.txt"
 
 # Nothing to review if quarantine is empty or missing
 if [ -z "$(ls -A "$malicious_dir" 2>/dev/null)" ]; then
@@ -49,6 +50,7 @@ while true; do
     case "$opt" in
         1)
             mv "$malicious_dir/$file" "$dir/$file"
+            echo "$file" >> "$whitelist"
             echo "Restored $file to $dir."
             ;;
         2)

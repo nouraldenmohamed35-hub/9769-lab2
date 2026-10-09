@@ -12,6 +12,7 @@ dir="$(realpath "$1")"
 malicious_dir="$(realpath -m "$2")"
 last="$script_dir/directory-info.last"
 new="$script_dir/directory-info.new"
+whitelist="$script_dir/whitelist.txt"
 
 mkdir -p "$malicious_dir"
 
@@ -19,6 +20,11 @@ BAD_KEYWORDS="virus|trojan|malware|worm|ransomware"
 
 is_malicious() {
     file="$1"
+
+    # Skip files that were restored by the user (whitelist)
+    if [ -f "$whitelist" ] && grep -qxF "$file" "$whitelist"; then
+        return 1
+    fi
 
     case "$file" in
         *.exe|*.bat|*.vbs|*.scr|*.ps1) return 0 ;;

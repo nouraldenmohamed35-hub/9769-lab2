@@ -3,3 +3,4 @@ quarantine/
 empty_q/
 directory-info.*
 *.save
+whitelist.txt
